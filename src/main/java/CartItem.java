@@ -12,6 +12,9 @@ public class CartItem {
     }
 
     public void setQuantity(int quantity) {
+        if (quantity <= 0) {
+            throw new InvalidQuantityException(quantity);
+        }
         this.quantity = quantity;
     }
 

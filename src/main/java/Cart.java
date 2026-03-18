@@ -5,6 +5,10 @@ public class Cart {
     List<CartItem> items = new ArrayList<>();
 
     public void addItem(Product product, int quantity){
+        if (quantity <= 0) {
+            throw new InvalidQuantityException(quantity);
+        }
+
         for (CartItem item : items){
             if (item.getProduct().getId() == product.getId()){
                 item.setQuantity(item.getQuantity()+quantity);
