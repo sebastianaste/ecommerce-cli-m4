@@ -1,9 +1,10 @@
-import java.util.List;
-import java.util.Locale;
 import java.util.Scanner;
+import java.util.InputMismatchException;
+import java.util.List;
+
 
 public class Console {
-    private Scanner scanner = new Scanner(System.in);
+    private Scanner scanner = new Scanner(System.in).useDelimiter("\\R");
     private StoreService storeService ;
 
     public Console(StoreService storeService) {
@@ -20,8 +21,14 @@ public class Console {
             System.out.println("0) Exit");
             System.out.println("Option: ");
             do {
-                option = readInt();}
-            while ((option < 0) && (option <= 2 ));
+                option = readInt();
+                if (option > 2 || option < 0)  {
+                    System.out.println(option);
+                    System.out.println("Invalid option, try again.");
+                    System.out.println("Option:");
+                }
+            }
+            while (!((option >= 0) && (option <= 2 )));
             switch (option){
                 case 1:
                     adminMenu();
@@ -31,6 +38,9 @@ public class Console {
                     break;
                 case 0:
                     return;
+                default:
+                    System.out.println("Invalid option, try again.");
+                    break;
             }
 
         } while (option != 0);
@@ -48,10 +58,17 @@ public class Console {
             System.out.println("4) Create product");
             System.out.println("5) Edit product");
             System.out.println("6) Delete product");
+            System.out.println("0) Back");
             System.out.println("Option: ");
             do {
-                option = readInt();}
-            while ((option < 0) && (option <= 6 ));
+                option = readInt();
+                if (option > 6 || option < 0)  {
+                    System.out.println(option);
+                    System.out.println("Invalid option, try again.");
+                    System.out.println("Option:");
+                }
+            }
+            while (!((option >= 0) && (option <= 6 )));
             switch (option){
                 case 1:
                     storeService.getCatalog().listProducts();
@@ -71,17 +88,75 @@ public class Console {
                 case 6:
                     deleteProduct();
                     break;
+                case 0:
+                    break;
+                default:
+                    System.out.println("Invalid option, try again.");
             }
 
         } while (option != 0);
     }
     private void userMenu(){
+        int option;
+        do {
+            System.out.println("User Menu:");
+            System.out.println("1) List products");
+            System.out.println("2) Search by name");
+            System.out.println("3) Search by category");
+            System.out.println("4) Add to cart");
+            System.out.println("5) Delete from cart");
+            System.out.println("6) View cart");
+            System.out.println("7) View discounts");
+            System.out.println("8) Checkout");
+            System.out.println("0) Back");
+            System.out.println("Option: ");
+            do {
+                option = readInt();
+                if (option > 8 || option < 0)  {
+                    System.out.println(option);
+                    System.out.println("Invalid option, try again.");
+                    System.out.println("Option:");
+                }
+            }
+            while (!((option >= 0) && (option <= 8)));
+            switch (option){
+                case 1:
+                    storeService.getCatalog().listProducts();
+                    break;
+                case 2:
+                    searchByName();
+                    break;
+                case 3:
+                    searchByCategory();
+                    break;
+                case 4:
+                    addToCart();
+                    break;
+                case 5:
+                    removeFromCart();
+                    break;
+                case 6:
+                    viewCart();
+                    break;
+                case 7:
+                    viewDiscounts();
+                    break;
+                case 8:
+                    checkout();
+                    break;
+                case 0:
+                    break;
+                default:
+                    System.out.println("Invalid option, try again.");
+                    break;
+            }
 
+        } while (option != 0);
     }
 
     private void searchByName() {
         System.out.print("Name: ");
-        String name = scanner.nextLine().trim();
+        String name = scanner.next().trim();
         List<Product> results = storeService.getCatalog().searchByName(name);
         if (results.isEmpty())
             System.out.println("No results.");
@@ -91,8 +166,8 @@ public class Console {
     }
 
     private void searchByCategory() {
-        System.out.print("Category ");
-        String category = scanner.nextLine().trim();
+        System.out.print("Category: ");
+        String category = scanner.next().trim();
         List<Product> results = storeService.getCatalog().searchByCategory(category);
         if (results.isEmpty())
             System.out.println("No results.");
@@ -108,9 +183,9 @@ public class Console {
         if (p == null) { System.out.println("Product not found."); return; }
         System.out.println("Editing: " + p.getName());
         System.out.print("New name: ");
-        String name = scanner.nextLine().trim();
+        String name = scanner.next().trim();
         System.out.print("New category: ");
-        String category = scanner.nextLine().trim();
+        String category = scanner.next().trim();
         System.out.print("New price: ");
         double price = readDouble();
         System.out.print("New stock: ");
@@ -126,11 +201,11 @@ public class Console {
 
     private void createProduct() {
         System.out.print("Name: ");
-        String name = scanner.nextLine().trim();
+        String name = scanner.next().trim();
         System.out.print("Description: ");
-        String description = scanner.nextLine().trim();
+        String description = scanner.next().trim();
         System.out.print("Category: ");
-        String category = scanner.nextLine().trim();
+        String category = scanner.next().trim();
         System.out.print("Price: ");
         double price = readDouble();
         if (price <= 0) {
@@ -156,7 +231,7 @@ public class Console {
             return;
         }
         System.out.print("Are you sure you want to delete '" + p.getName() + "'? (y/N): ");
-        String confirm = scanner.nextLine().trim();
+        String confirm = scanner.next().trim();
         if (confirm.toLowerCase().equalsIgnoreCase("y")) {
             storeService.getCatalog().removeProduct(id);
             System.out.println("Product deleted.");
@@ -209,40 +284,40 @@ public class Console {
         System.out.println("Base total: $" + storeService.getCart().getBaseTotal());
     }
     private void viewDiscounts() {
-        System.out.println("Active discounts:");
-        for (Discount d : storeService.getDiscounts()) {
-            System.out.println(d.getDescription());
-        }
+        storeService.showActiveDiscounts();
     }
     private void checkout() {
-        if (storeService.getCart().isEmpty()) { System.out.println("Cart is empty."); return; }
+        if (storeService.getCart().isEmpty()) {
+            System.out.println("Cart is empty.");
+            return;
+        }
         viewCart();
-        System.out.print("Confirm purchase? (y/n): ");
-        String confirm = scanner.nextLine().trim();
-        if (!confirm.equalsIgnoreCase("y")) { System.out.println("Cancelled."); return; }
+        System.out.print("Confirm purchase? (y/N): ");
+        String confirm = scanner.next().trim();
+        if (!confirm.equals("y")) {
+            System.out.println("Cancelled.");
+            System.out.println(confirm);
+            return;
+        }
         Order order = storeService.checkout();
+        storeService.getCart().clear();
         System.out.println("\nPurchase confirmed: " + order);
     }
-
-
-
-
-
-
-
 
 
     private int readInt(){
         try {
             return scanner.nextInt();
-        } catch (Exception e){
+        } catch (NumberFormatException | InputMismatchException e){
+            scanner.next();
             return -1;
         }
     }
     private double readDouble() {
         try {
             return scanner.nextDouble();
-        } catch (Exception e) {
+        } catch (NumberFormatException | InputMismatchException e ) {
+            scanner.next();
             return -1;
         }
     }

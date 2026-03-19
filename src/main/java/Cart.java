@@ -5,14 +5,25 @@ public class Cart {
     List<CartItem> items = new ArrayList<>();
 
     public void addItem(Product product, int quantity){
-        if (quantity <= 0) {
+        if (quantity <= 0 ) {
+            throw new InvalidQuantityException(quantity);
+        }
+
+        if (quantity > product.getStock()){
             throw new InvalidQuantityException(quantity);
         }
 
         for (CartItem item : items){
-            if (item.getProduct().getId() == product.getId()){
-                item.setQuantity(item.getQuantity()+quantity);
-                return;
+            System.out.println(quantity);
+            System.out.println(item.getProduct().getStock());
+
+            if (quantity < item.getProduct().getStock()) {
+                item.getProduct().setStock(item.getProduct().getStock() - quantity);
+
+                if (item.getProduct().getId() == product.getId()) {
+                    item.setQuantity(item.getQuantity() + quantity);
+                    return;
+                }
             }
         }
         items.add(new CartItem(product,quantity));
