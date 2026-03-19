@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Locale;
 
 public class Catalog {
     private List<Product> products = new ArrayList<>();
@@ -21,6 +20,11 @@ public class Catalog {
         addProduct("Pokemon Sapphire GBA", "Third-generation entry. Hoenn region. Original translucent shell, intact label.", "GBA Games", 40000, 23);
         addProduct("Pokemon FireRed GBA", "Gen 1 remake on GBA. Updated visuals. Authentic Nintendo PCB, verified working.", "GBA Games", 40000, 35);
         addProduct("Banjo-Tooie N64", "Banjo-Kazooie sequel. Expanded world maps. Excellent cartridge and label condition.", "N64 Games", 40000, 0);
+    }
+    public void listProducts(){
+        for (Product p : products){
+            System.out.println(p.toString());
+        }
     }
 
     public Product addProduct(String name, String description, String category, double price, int stock) {
