@@ -1,3 +1,7 @@
+package com.ecommerce.discount;
+
+import com.ecommerce.storelogic.CartItem;
+
 import java.util.List;
 
 public class DiscountCategory implements Discount {
@@ -15,7 +19,7 @@ public class DiscountCategory implements Discount {
 
     @Override
     public String getDescription() {
-        return "Discount of "+discountPercentage+"% on purchases with "+categoryDiscount;
+        return "com.ecommerce.discount.Discount of "+discountPercentage+"% on purchases with "+categoryDiscount;
     }
 
     @Override

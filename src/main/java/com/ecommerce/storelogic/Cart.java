@@ -1,3 +1,7 @@
+package com.ecommerce.storelogic;
+
+import com.ecommerce.exceptions.InvalidQuantityException;
+
 import java.util.ArrayList;
 import java.util.List;
 

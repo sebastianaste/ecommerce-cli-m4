@@ -1,3 +1,7 @@
+package com.ecommerce.storelogic;
+
+import com.ecommerce.exceptions.InvalidQuantityException;
+
 public class CartItem {
     private Product product;
     private int quantity;

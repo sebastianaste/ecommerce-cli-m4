@@ -1,4 +1,7 @@
-import java.util.ArrayList;
+package com.ecommerce.storelogic;
+
+import com.ecommerce.discount.Discount;
+
 import java.util.List;
 
 public class Order {
@@ -29,11 +32,10 @@ public class Order {
 
     @Override
     public String toString() {
-        return "Order{" +
+        return
                 "items=" + items +
                 ", subTotal=" + subTotal +
                 ", amountDiscount=" + amountDiscount +
-                ", total=" + total +
-                '}';
+                ", total=" + total;
     }
 }

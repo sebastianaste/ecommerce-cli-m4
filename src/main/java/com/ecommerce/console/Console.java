@@ -1,3 +1,9 @@
+package com.ecommerce.console;
+
+import com.ecommerce.storelogic.*;
+import com.ecommerce.discount.*;
+import com.ecommerce.exceptions.*;
+
 import java.util.Scanner;
 import java.util.InputMismatchException;
 import java.util.List;
@@ -177,10 +183,10 @@ public class Console {
     }
 
     private void editProduct() {
-        System.out.print("Product ID: ");
+        System.out.print("com.ecommerce.storelogic.Product ID: ");
         int id = readInt();
         Product p = storeService.getCatalog().findById(id);
-        if (p == null) { System.out.println("Product not found."); return; }
+        if (p == null) { System.out.println("com.ecommerce.storelogic.Product not found."); return; }
         System.out.println("Editing: " + p.getName());
         System.out.print("New name: ");
         String name = scanner.next().trim();
@@ -219,33 +225,33 @@ public class Console {
             return;
         }
         Product p = storeService.getCatalog().addProduct(name, description, category, price, stock);
-        System.out.println("Product created: " + p.toString());
+        System.out.println("com.ecommerce.storelogic.Product created: " + p.toString());
     }
 
     private void deleteProduct() {
-        System.out.print("Product id: ");
+        System.out.print("com.ecommerce.storelogic.Product id: ");
         int id = readInt();
         Product p = storeService.getCatalog().findById(id);
         if (p == null) {
-            System.out.println("Product not found.");
+            System.out.println("com.ecommerce.storelogic.Product not found.");
             return;
         }
         System.out.print("Are you sure you want to delete '" + p.getName() + "'? (y/N): ");
         String confirm = scanner.next().trim();
         if (confirm.toLowerCase().equalsIgnoreCase("y")) {
             storeService.getCatalog().removeProduct(id);
-            System.out.println("Product deleted.");
+            System.out.println("com.ecommerce.storelogic.Product deleted.");
         } else {
             System.out.println("Deletion aborted.");
         }
     }
 
     private void addToCart() {
-        System.out.print("Product ID: ");
+        System.out.print("com.ecommerce.storelogic.Product ID: ");
         int id = readInt();
         Product p = storeService.getCatalog().findById(id);
         if (p == null) {
-            System.out.println("Product not found.");
+            System.out.println("com.ecommerce.storelogic.Product not found.");
             return;
         }
         if (p.getStock() == 0) {
@@ -264,7 +270,7 @@ public class Console {
     }
 
     private void removeFromCart() {
-        System.out.print("Product ID: ");
+        System.out.print("com.ecommerce.storelogic.Product ID: ");
         int id = readInt();
         if (storeService.getCart().removeItem(id))
             System.out.println("Item removed from cart.");
@@ -274,10 +280,10 @@ public class Console {
 
     private void viewCart() {
         if (storeService.getCart().isEmpty()) {
-            System.out.println("Cart is empty.");
+            System.out.println("com.ecommerce.storelogic.Cart is empty.");
             return;
         }
-        System.out.println("Cart:");
+        System.out.println("com.ecommerce.storelogic.Cart:");
         for (CartItem item : storeService.getCart().getItems()) {
             System.out.println(item);
         }
@@ -288,7 +294,7 @@ public class Console {
     }
     private void checkout() {
         if (storeService.getCart().isEmpty()) {
-            System.out.println("Cart is empty.");
+            System.out.println("com.ecommerce.storelogic.Cart is empty.");
             return;
         }
         viewCart();
