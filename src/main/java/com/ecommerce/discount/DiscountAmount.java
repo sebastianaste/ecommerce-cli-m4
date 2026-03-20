@@ -27,6 +27,6 @@ public class DiscountAmount implements Discount {
 
     @Override
     public double applyDiscount(double subtotal) {
-        return subtotal * (100 - discountPercentage)/100 ;
+        return subtotal * discountPercentage / 100;
     }
 }

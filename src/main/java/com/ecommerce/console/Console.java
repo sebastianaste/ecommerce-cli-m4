@@ -1,5 +1,4 @@
 package com.ecommerce.console;
-
 import com.ecommerce.storelogic.*;
 import com.ecommerce.discount.*;
 import com.ecommerce.exceptions.*;
@@ -59,39 +58,49 @@ public class Console {
         do {
             System.out.println("Admin menu:");
             System.out.println("1) List products");
-            System.out.println("2) Search by name");
-            System.out.println("3) Search by category");
-            System.out.println("4) Create product");
-            System.out.println("5) Edit product");
-            System.out.println("6) Delete product");
+            System.out.println("2) List products sorted by name");
+            System.out.println("3) List products sorted by price");
+            System.out.println("4) Search by name");
+            System.out.println("5) Search by category");
+            System.out.println("6) Create product");
+            System.out.println("7) Edit product");
+            System.out.println("8) Delete product");
             System.out.println("0) Back");
             System.out.println("Option: ");
             do {
                 option = readInt();
-                if (option > 6 || option < 0)  {
+                if (option > 8 || option < 0)  {
                     System.out.println(option);
                     System.out.println("Invalid option, try again.");
                     System.out.println("Option:");
                 }
             }
-            while (!((option >= 0) && (option <= 6 )));
+            while (!((option >= 0) && (option <= 8 )));
             switch (option){
                 case 1:
                     storeService.getCatalog().listProducts();
                     break;
                 case 2:
-                    searchByName();
+                    for (Product p : storeService.getCatalog().getProductsSortedByName())
+                        System.out.println(p);
                     break;
                 case 3:
-                    searchByCategory();
+                    for (Product p : storeService.getCatalog().getProductsSortedByPrice())
+                        System.out.println(p);
                     break;
                 case 4:
-                    createProduct();
+                    searchByName();
                     break;
                 case 5:
-                    editProduct();
+                    searchByCategory();
                     break;
                 case 6:
+                    createProduct();
+                    break;
+                case 7:
+                    editProduct();
+                    break;
+                case 8:
                     deleteProduct();
                     break;
                 case 0:
@@ -183,10 +192,10 @@ public class Console {
     }
 
     private void editProduct() {
-        System.out.print("com.ecommerce.storelogic.Product ID: ");
+        System.out.print("Product ID: ");
         int id = readInt();
         Product p = storeService.getCatalog().findById(id);
-        if (p == null) { System.out.println("com.ecommerce.storelogic.Product not found."); return; }
+        if (p == null) { System.out.println("Product not found."); return; }
         System.out.println("Editing: " + p.getName());
         System.out.print("New name: ");
         String name = scanner.next().trim();
@@ -225,33 +234,33 @@ public class Console {
             return;
         }
         Product p = storeService.getCatalog().addProduct(name, description, category, price, stock);
-        System.out.println("com.ecommerce.storelogic.Product created: " + p.toString());
+        System.out.println("Product created: " + p.toString());
     }
 
     private void deleteProduct() {
-        System.out.print("com.ecommerce.storelogic.Product id: ");
+        System.out.print("Product id: ");
         int id = readInt();
         Product p = storeService.getCatalog().findById(id);
         if (p == null) {
-            System.out.println("com.ecommerce.storelogic.Product not found.");
+            System.out.println("Product not found.");
             return;
         }
         System.out.print("Are you sure you want to delete '" + p.getName() + "'? (y/N): ");
         String confirm = scanner.next().trim();
         if (confirm.toLowerCase().equalsIgnoreCase("y")) {
             storeService.getCatalog().removeProduct(id);
-            System.out.println("com.ecommerce.storelogic.Product deleted.");
+            System.out.println("Product deleted.");
         } else {
             System.out.println("Deletion aborted.");
         }
     }
 
     private void addToCart() {
-        System.out.print("com.ecommerce.storelogic.Product ID: ");
+        System.out.print("Product ID: ");
         int id = readInt();
         Product p = storeService.getCatalog().findById(id);
         if (p == null) {
-            System.out.println("com.ecommerce.storelogic.Product not found.");
+            System.out.println("Product not found.");
             return;
         }
         if (p.getStock() == 0) {
@@ -270,7 +279,7 @@ public class Console {
     }
 
     private void removeFromCart() {
-        System.out.print("com.ecommerce.storelogic.Product ID: ");
+        System.out.print("Product ID: ");
         int id = readInt();
         if (storeService.getCart().removeItem(id))
             System.out.println("Item removed from cart.");
@@ -280,10 +289,10 @@ public class Console {
 
     private void viewCart() {
         if (storeService.getCart().isEmpty()) {
-            System.out.println("com.ecommerce.storelogic.Cart is empty.");
+            System.out.println("Cart is empty.");
             return;
         }
-        System.out.println("com.ecommerce.storelogic.Cart:");
+        System.out.println("Cart:");
         for (CartItem item : storeService.getCart().getItems()) {
             System.out.println(item);
         }
@@ -294,7 +303,7 @@ public class Console {
     }
     private void checkout() {
         if (storeService.getCart().isEmpty()) {
-            System.out.println("com.ecommerce.storelogic.Cart is empty.");
+            System.out.println("Cart is empty.");
             return;
         }
         viewCart();

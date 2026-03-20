@@ -17,20 +17,16 @@ public class Cart {
             throw new InvalidQuantityException(quantity);
         }
 
-        for (CartItem item : items){
-            System.out.println(quantity);
-            System.out.println(item.getProduct().getStock());
-
-            if (quantity < item.getProduct().getStock()) {
-                item.getProduct().setStock(item.getProduct().getStock() - quantity);
-
-                if (item.getProduct().getId() == product.getId()) {
-                    item.setQuantity(item.getQuantity() + quantity);
-                    return;
-                }
+        for (CartItem item : items) {
+            if (item.getProduct().getId() == product.getId()) {
+                item.setQuantity(item.getQuantity() + quantity);
+                product.setStock(product.getStock() - quantity);
+                return;
             }
         }
-        items.add(new CartItem(product,quantity));
+
+        product.setStock(product.getStock() - quantity);
+        items.add(new CartItem(product, quantity));
     }
 
     public boolean removeItem(int productId) {
