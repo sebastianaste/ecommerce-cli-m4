@@ -22,7 +22,7 @@ public class DiscountAmount implements Discount {
 
     @Override
     public String getDescription() {
-        return "com.ecommerce.discount.Discount of "+discountPercentage+"% on purchases above $"+discountThreshold;
+        return "Discount of "+discountPercentage+"% on purchases above $"+discountThreshold;
     }
 
     @Override

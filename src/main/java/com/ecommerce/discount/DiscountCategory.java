@@ -19,7 +19,7 @@ public class DiscountCategory implements Discount {
 
     @Override
     public String getDescription() {
-        return "com.ecommerce.discount.Discount of "+discountPercentage+"% on purchases with "+categoryDiscount;
+        return "Discount of "+discountPercentage+"% on purchases with "+categoryDiscount;
     }
 
     @Override
