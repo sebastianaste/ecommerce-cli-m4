@@ -30,6 +30,10 @@ public class Order {
         this.total = subTotal - amountDiscount;
     }
 
+    public double getSubTotal() { return subTotal; }
+    public double getAmountDiscount() { return amountDiscount; }
+    public double getTotal() { return total; }
+
     @Override
     public String toString() {
         return

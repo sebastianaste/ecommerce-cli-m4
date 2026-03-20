@@ -306,19 +306,23 @@ public class Console {
             System.out.println("Cart is empty.");
             return;
         }
-        viewCart();
+        System.out.println("Cart:");
+        for (CartItem item : storeService.getCart().getItems()) {
+            System.out.println(item);
+        }
+        Order order = storeService.checkout();
+        System.out.println("Subtotal: $" + order.getSubTotal());
+        System.out.println("Discount: -$" + order.getAmountDiscount());
+        System.out.println("Total: $" + order.getTotal());
         System.out.print("Confirm purchase? (y/N): ");
         String confirm = scanner.next().trim();
         if (!confirm.equals("y")) {
             System.out.println("Cancelled.");
-            System.out.println(confirm);
             return;
         }
-        Order order = storeService.checkout();
         storeService.getCart().clear();
-        System.out.println("\nPurchase confirmed: " + order);
+        System.out.println("Purchase confirmed.");
     }
-
 
     private int readInt(){
         try {
